@@ -9,9 +9,13 @@ from django.http import JsonResponse
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 
+
+
+
+
 # Create your views here.
-@permission_classes([IsAuthenticated])
 @api_view(['GET','POST'])
+@permission_classes([IsAuthenticated])
 def calorie_view(request):
     if request.method == 'GET':
         food_items = FoodItem.objects.all()
@@ -32,8 +36,8 @@ def calorie_view(request):
             return Response(data, status=201)
         return Response(serializer.errors, status=400)
 
-@permission_classes([IsAuthenticated])
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def per_item(request,name):
     try:
         item = FoodItem.objects.filter(name__iexact=name)
@@ -81,8 +85,8 @@ def create_profile(request):
     return JsonResponse({"message": "User registered successfully"}, status=201)
 
 
-@permission_classes([IsAuthenticated])
 @api_view(['GET',])
+@permission_classes([IsAuthenticated])
 def view_profile(request):
     if request.method == 'GET':
         profiles = Profile.objects.all()
@@ -92,3 +96,5 @@ def view_profile(request):
             "data": serializer.data
         }
         return Response(data)
+    
+    return Response({"error": "Method not allowed"}, status=405)
